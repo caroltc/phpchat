@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="application/javascript">
+        var wsServer = 'ws://127.0.0.1:9502';
+        var websocket = new WebSocket(wsServer);
+        websocket.onopen = function (evt) {
+            console.log("Connected to WebSocket server.");
+        };
+
+        websocket.onclose = function (evt) {
+            console.log("Disconnected");
+        };
+
+        websocket.onmessage = function (evt) {
+            console.log('Retrieved data from server: ' + evt.data);
+            //先保存div中原来的html
+            var html = document.getElementById("show_text").innerHTML;
+            //再跟你想追加的代码加到一起插入div中
+            document.getElementById("show_text").innerHTML = evt.data +'<br>'+ html;
+        };
+
+        websocket.onerror = function (evt, e) {
+            console.log('Error occured: ' + evt.data);
+        };
+
+        function sendMsg() {
+            var msg = document.getElementById("send_text").value;
+            console.log('client send msg:' + msg);
+            websocket.send(msg);
+        }
+    </script>
+</head>
+<body>
+<div>
+    <textarea id="send_text" style="width: 100%" rows="5"></textarea>
+    <button onclick="sendMsg()" style="float: right;">发送</button>
+    <br>
+</div>
+<div id="show_text"></div>
+</body>
+</html>

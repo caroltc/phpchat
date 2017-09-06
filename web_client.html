@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Title</title>
     <script type="application/javascript">
         var wsServer = 'ws://127.0.0.1:9502';
@@ -16,10 +17,15 @@
 
         websocket.onmessage = function (evt) {
             console.log('Retrieved data from server: ' + evt.data);
+            var obj = eval('(' + evt.data + ')');
             //先保存div中原来的html
             var html = document.getElementById("show_text").innerHTML;
+            var user = '用户' + obj.user;
+            if (obj.user === 0) {
+                user = '系统';
+            }
             //再跟你想追加的代码加到一起插入div中
-            document.getElementById("show_text").innerHTML = evt.data +'<br>'+ html;
+            document.getElementById("show_text").innerHTML = '<div class="msg"><p class="msg_head">['+obj.datetime+']['+user+']</p><p class="msg_body">'+obj.data+'</p></div>' + html;
         };
 
         websocket.onerror = function (evt, e) {
@@ -32,6 +38,12 @@
             websocket.send(msg);
         }
     </script>
+    <style type="text/css">
+        *{margin: 0; padding: 0;}
+        div{font-size: 12px;}
+        .msg_head{color: #999;}
+        .msg_body{padding: 6px 12px 12px 12px;}
+    </style>
 </head>
 <body>
 <div>

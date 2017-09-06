@@ -12,35 +12,35 @@ $ws = new swoole_websocket_server("0.0.0.0", 9502);
 $ws->on('open', function ($ws, $request) {
     if ($request->fd > 10) {
         echo "can not connect client {$request->fd}";
-        $ws->push($request->fd, "[系统]人数超过上限，无法接入");
+        $ws->push($request->fd, json_encode(['datetime' => date('Y-m-d H:i:s'), 'user' => 0, 'data' => "人数超过上限，无法接入"]));
     } else {
         echo "connect client {$request->fd}";
         addClient($request->fd);
-        sendMsg($ws, "[系统]用户{$request->fd}进入");
+        sendMsg($ws, "用户{$request->fd}进入", 0);
     }
 });
 
 //监听WebSocket消息事件
 $ws->on('message', function ($ws, $frame) {
     echo "Message: {$frame->data}\n";
-    sendMsg($ws, "[用户{$frame->fd}]" . $frame->data);
+    sendMsg($ws, $frame->data, $frame->fd);
 });
 
 //监听WebSocket连接关闭事件
 $ws->on('close', function ($ws, $fd) {
     echo "close client {$fd}";
     removeClient($fd);
-    sendMsg($ws, "[系统]用户{$fd}离开");
+    sendMsg($ws, "用户{$fd}离开", 0);
 });
 
 $ws->start();
 
-function sendMsg($ws, $data)
+function sendMsg($ws, $data, $user_fd)
 {
     $clients = getClients();
     if (!empty($clients)) {
         foreach($clients as $fd) {
-            @$ws->push($fd, "[".date('Y-m-d H:i:s')."]{$data}");
+            @$ws->push($fd, json_encode(['datetime' => date('Y-m-d H:i:s'), 'user' => $user_fd, 'data' => $data]));
         }
     }
 }

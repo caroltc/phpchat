@@ -10,7 +10,8 @@
 $ws = new swoole_websocket_server("0.0.0.0", 9502);
 //监听WebSocket连接打开事件
 $ws->on('open', function ($ws, $request) {
-    if ($request->fd > 10) {
+    $clients = getClients();
+    if (count($clients) > 10) {
         echo "can not connect client {$request->fd}";
         $ws->push($request->fd, json_encode(['datetime' => date('Y-m-d H:i:s'), 'user' => 0, 'data' => "人数超过上限，无法接入"]));
     } else {

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Title</title>
     <script type="application/javascript">
-        var wsServer = 'ws://127.0.0.1:9502';
+        var wsServer = 'ws://138.128.210.207:12009';
         var websocket = new WebSocket(wsServer);
         websocket.onopen = function (evt) {
             console.log("Connected to WebSocket server.");
@@ -48,7 +48,8 @@
 <body>
 <div>
     <textarea id="send_text" style="width: 100%" rows="5"></textarea>
-    <button onclick="sendMsg()" style="float: right;">发送</button>
+    <button onclick="sendMsg()" style="float: right; width: 200px; line-height: 32px;">发送</button>
+    <br>
     <br>
 </div>
 <div id="show_text"></div>

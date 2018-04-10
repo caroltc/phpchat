@@ -3,8 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Title</title>
+    <title>IM</title>
+    <style type="text/css">
+        *{margin: 0; padding: 0;}
+        div{font-size: 12px;}
+        .msg_head{color: #999;}
+        .msg_body{padding: 6px 12px 12px 12px;}
+    </style>
+</head>
+<body>
+<div>
+    <div id="toolbar"></div>
+    <div id="send_text" style="width: 100%;height:150px;overflow:scroll;"></div>
+    <button onclick="sendMsg()" style="float: right; width: 200px; line-height: 32px;">发送</button>
+    <br>
+    <br>
+</div>
+<div id="show_text"></div>
+<script type="text/javascript" src="wangEditor.min.js"></script>
     <script type="application/javascript">
+        var E = window.wangEditor;
+        var editor2 = new E('#toolbar','#send_text');
+	editor2.customConfig.uploadImgShowBase64 = true;
+        editor2.create();
         var wsServer = 'ws://138.128.210.207:12009';
         var websocket = new WebSocket(wsServer);
         websocket.onopen = function (evt) {
@@ -33,25 +54,11 @@
         };
 
         function sendMsg() {
-            var msg = document.getElementById("send_text").value;
+           // var msg = document.getElementById("send_text").value;
+            var msg = editor2.txt.html();
             console.log('client send msg:' + msg);
             websocket.send(msg);
         }
     </script>
-    <style type="text/css">
-        *{margin: 0; padding: 0;}
-        div{font-size: 12px;}
-        .msg_head{color: #999;}
-        .msg_body{padding: 6px 12px 12px 12px;}
-    </style>
-</head>
-<body>
-<div>
-    <textarea id="send_text" style="width: 100%" rows="5"></textarea>
-    <button onclick="sendMsg()" style="float: right; width: 200px; line-height: 32px;">发送</button>
-    <br>
-    <br>
-</div>
-<div id="show_text"></div>
 </body>
 </html>

@@ -20,14 +20,13 @@
     <br>
 </div>
 <div id="show_text"></div>
-    <script type="text/javascript" src="https://cdn.bootcss.com/wangEditor/10.0.13/wangEditor.min.js"></script>
+<script type="text/javascript" src="wangEditor.min.js"></script>
     <script type="application/javascript">
         var E = window.wangEditor;
         var editor2 = new E('#toolbar','#send_text');
-        editor2.customConfig.uploadImgShowBase64 = true;
+	editor2.customConfig.uploadImgShowBase64 = true;
         editor2.create();
-
-        var wsServer = 'ws://172.22.14.72:12009';
+        var wsServer = 'ws://138.128.210.207:12009';
         var websocket = new WebSocket(wsServer);
         websocket.onopen = function (evt) {
             console.log("Connected to WebSocket server.");

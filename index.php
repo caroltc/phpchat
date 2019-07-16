@@ -14,6 +14,17 @@
     </style>
 </head>
 <body>
+<?php
+session_start();
+if (empty($_SESSION['key']) && !empty($_POST['key'])) {
+    if (md5($_POST['key']) === '469cee94c22059a4d0c2baa96491bb23') {
+        $_SESSION['key'] = $_POST['key'];
+    }
+}
+if (empty($_SESSION['key'])) {
+    header("Location:login.html");
+}
+?>
 <div>
     <div id="toolbar"></div>
     <div id="send_text" style="width: 100%;">

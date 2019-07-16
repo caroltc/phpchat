@@ -10,6 +10,7 @@
 class LibSqlite {
     private $db;
     private $tab_name = 'im';
+    private $limit = 10;
     public function __construct($db_name){
         // 初始化数据库，并且连接数据库 数据库配置
         $this->db = new PDO('sqlite:' . $db_name);
@@ -29,8 +30,9 @@ class LibSqlite {
         return $result;
     }
 
-    public function getPageBreakParam($page = 1, $limit = 2)
+    public function getPageBreakParam($page = 1)
     {
+        $limit = $this->limit;
         $sth = $this->db->prepare('SELECT count(id) as c FROM '.$this->tab_name);
         $sth->execute();
         $result = $sth->fetchAll();
@@ -63,8 +65,9 @@ class LibSqlite {
         return [$start, $end];
     }
 
-    public function query($page = 1, $limit = 2)//表名称和条件
+    public function query($page = 1)//表名称和条件
     {
+        $limit = $this->limit;
         $start = $limit * ($page - 1);
         $end = $start + $limit;
         $sth = $this->db->prepare('SELECT * FROM '.$this->tab_name.' order by id desc limit ' . $start . ',' . $end);

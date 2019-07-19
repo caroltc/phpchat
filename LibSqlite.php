@@ -72,7 +72,7 @@ class LibSqlite {
         $end = $start + $limit;
         $sth = $this->db->prepare('SELECT * FROM '.$this->tab_name.' order by id desc limit ' . $start . ',' . $end);
         $sth->execute();
-        $result = $sth->fetchAll();
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 }

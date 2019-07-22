@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>IM</title>
+    <link rel="stylesheet" type="text/css" href="loading.css" />
     <style type="text/css">
         *{margin: 0; padding: 0;}
         div{font-size: 12px;}
@@ -35,6 +36,15 @@ if (empty($_SESSION['key'])) {
         <button @click="sendMsg" style="float: right; width: 200px; line-height: 32px;">发送</button>
         <br>
         <br>
+    </div>
+    <div class="loader" v-show="show_loading">
+        <div>L</div>
+        <div>O</div>
+        <div>A</div>
+        <div>D</div>
+        <div>I</div>
+        <div>N</div>
+        <div>G</div>
     </div>
     <div id="show_text">
         <div v-for="item in data_list">
@@ -70,7 +80,8 @@ if (empty($_SESSION['key'])) {
             total_num:0,
             start_page:0,
             end_page:0,
-            pages: []
+            pages: [],
+            show_loading:false
         },
         mounted: function() {
             var E = window.wangEditor;
@@ -107,6 +118,8 @@ if (empty($_SESSION['key'])) {
                 this.getData(page);
             },
             ajaxRequest: function (data, callback) {
+                this.show_loading = true;
+                var _this = this;
                 axios({
                     method: 'post',
                     url: 'deal.php',
@@ -114,6 +127,7 @@ if (empty($_SESSION['key'])) {
                     responseType: 'jsonstream'
                 }).then(function (response) {
                     callback(response)
+                    _this.show_loading = false;
                 });
             }
         }

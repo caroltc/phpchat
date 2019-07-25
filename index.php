@@ -33,7 +33,8 @@ if (empty($_SESSION['key'])) {
         <div id="toolbar"></div>
         <div id="send_text" style="width: 100%;">
         </div>
-        <button @click="sendMsg" style="float: right; width: 200px; line-height: 32px;">发送</button>
+        <button @click="sendMsg" style="float: right; width: 200px; line-height: 32px;margin-right: 20px;">发送</button>
+        <button @click="jumpPage(1)" style="float: right; width: 80px; line-height: 32px; margin-right: 20px;">刷新</button>
         <br>
         <br>
     </div>

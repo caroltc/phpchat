@@ -88,6 +88,20 @@ if (empty($_SESSION['key'])) {
             var E = window.wangEditor;
             this.editor = new E('#toolbar','#send_text');
             this.editor.customConfig.uploadImgShowBase64 = true;
+            this.editor.customConfig.uploadImgServer = 'upload.php';
+            this.editor.customConfig.uploadImgMaxSize = 10000 * 1024 * 1024; // max 10GB
+            this.editor.customConfig.uploadImgMaxLength = 1;
+            this.editor.customConfig.uploadFileName = 'upload_file';
+            this.editor.customConfig.uploadImgHooks = {
+                customInsert: function (insertImg, result, editor) {
+                    console.log(result)
+                    if (result.type == 'file'){
+                        editor.cmd.do('insertHTML', '<a href="'+result.data+'">'+result.file_name+'</a>');
+                    } else {
+                        insertImg(result.data)
+                    }
+                }
+            };
             this.editor.create();
             this.getData(this.page);
         },

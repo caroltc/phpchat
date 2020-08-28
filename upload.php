@@ -26,9 +26,10 @@ if ($_FILES["upload_file"]["error"] > 0) {
     $response_json = ['errno' => 500, 'data' => [], 'msg' => $_FILES["upload_file"]["error"]];
 } else {
     $file_name = str_replace(' ', '', $_FILES["upload_file"]["name"]);
-    if (!file_exists("upload/" . $_FILES["upload_file"]["name"])) {
-        move_uploaded_file($_FILES["upload_file"]["tmp_name"], "upload/" . $file_name);
+    if (file_exists("upload/" . $file_name)) {
+    	$file_name = date('YmdHis') .'_' . $file_name;
     }
+    move_uploaded_file($_FILES["upload_file"]["tmp_name"], "upload/" . $file_name);
     $response_json['data'] = 'upload/' . $file_name;
     $response_json['file_name'] = $_FILES["upload_file"]["name"] . '(' .getSize($_FILES["upload_file"]["size"]). ')';
 }
